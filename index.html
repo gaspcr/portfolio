@@ -222,14 +222,45 @@
   <!-- CONTACTO -->
   <section id="contacto" class="contact">
     <div class="wrap contact-inner">
-      <div>
+      <div class="contact-intro">
         <p class="label">Contacto</p>
         <h2>¿Qué necesita conectar<br>tu empresa?</h2>
+        <p>Déjanos tus datos y te contactamos dentro de 1 a 2 días hábiles para entender tu operación y proponerte una solución con alcance y plazos claros.</p>
       </div>
-      <div class="contact-side">
-        <p>Cuéntanos sobre tu operación y te proponemos una solución con alcance y plazos claros.</p>
-        <a href="mailto:TU_EMAIL_AQUI" class="btn btn-primary">Escribir a nuestro equipo</a>
-      </div>
+
+      <form class="form" id="contact-form" novalidate>
+        <!-- Clave pública de Web3Forms: reemplazar por la clave recibida en web3forms.com -->
+        <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="Nuevo contacto desde el sitio — Man in the Middle">
+        <input type="hidden" name="from_name" value="Sitio Man in the Middle">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+        <div class="row">
+          <label class="field"><span>Nombre *</span><input name="nombre" required autocomplete="name" placeholder="Tu nombre"></label>
+          <label class="field"><span>Empresa</span><input name="empresa" autocomplete="organization" placeholder="Nombre de la empresa"></label>
+        </div>
+        <div class="row">
+          <label class="field"><span>Email *</span><input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.cl"></label>
+          <label class="field"><span>Teléfono</span><input type="tel" name="telefono" autocomplete="tel" placeholder="+56 9 1234 5678"></label>
+        </div>
+        <fieldset class="field">
+          <span>¿Qué necesitas?</span>
+          <div class="chips">
+            <label><input type="checkbox" name="interes" value="Software a medida"><i>Software a medida</i></label>
+            <label><input type="checkbox" name="interes" value="Integración de sistemas"><i>Integración</i></label>
+            <label><input type="checkbox" name="interes" value="Ecommerce / sitio web"><i>Ecommerce / web</i></label>
+            <label><input type="checkbox" name="interes" value="Automatización y datos"><i>Automatización</i></label>
+            <label><input type="checkbox" name="interes" value="Marketing digital"><i>Marketing</i></label>
+            <label><input type="checkbox" name="interes" value="Hardware"><i>Hardware</i></label>
+          </div>
+        </fieldset>
+        <label class="field"><span>Mensaje</span><textarea name="mensaje" rows="4" placeholder="Cuéntanos brevemente qué quieres resolver"></textarea></label>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
     </div>
   </section>
 </main>
@@ -252,6 +283,25 @@
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   const nav = document.querySelector('.nav');
   addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+  const form = document.getElementById('contact-form');
+  const status = form.querySelector('.form-status');
+  form.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    if (!form.checkValidity()) { status.textContent = 'Completa tu nombre y un email válido.'; status.dataset.state = 'error'; return; }
+    const btn = form.querySelector('button');
+    const data = Object.fromEntries(new FormData(form));
+    data.interes = [...form.querySelectorAll('[name=interes]:checked')].map(i => i.value).join(', ') || '—';
+    data.replyto = data.email;
+    btn.disabled = true; status.textContent = 'Enviando…'; status.dataset.state = '';
+    try {
+      const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) });
+      const j = await r.json();
+      if (!j.success) throw new Error(j.message);
+      form.reset(); status.textContent = 'Gracias. Te contactaremos pronto.'; status.dataset.state = 'ok';
+    } catch (e) {
+      status.textContent = 'No se pudo enviar. Intenta nuevamente en unos minutos.'; status.dataset.state = 'error';
+    } finally { btn.disabled = false; }
+  });
 </script>
 </body>
 </html>

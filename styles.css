@@ -202,3 +202,28 @@ h1 .soft { color: var(--text-3); }
   .f-side { width: 60%; right: -4px; }
   .contact { padding: 90px 0; }
 }
+
+/* FORM */
+.contact-inner { align-items: start; }
+.contact-intro p:not(.label) { color: var(--text-2); font-size: 17px; margin-top: 22px; max-width: 440px; }
+.form { display: flex; flex-direction: column; gap: 18px; padding: 30px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); }
+.form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 8px; border: 0; min-width: 0; }
+.field > span { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--text-3); }
+.field input, .field textarea { width: 100%; font: inherit; font-size: 15px; color: var(--text); background: var(--bg); border: 1px solid var(--line-2); border-radius: 10px; padding: 12px 14px; transition: border-color .2s; resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: var(--text-3); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips input { position: absolute; opacity: 0; pointer-events: none; }
+.chips i { display: inline-block; font-style: normal; font-size: 13px; color: var(--text-2); padding: 8px 12px; border: 1px solid var(--line-2); border-radius: 999px; cursor: pointer; transition: all .2s; user-select: none; }
+.chips label:hover i { border-color: var(--text-2); }
+.chips input:checked + i { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+.chips input:focus-visible + i { outline: 2px solid var(--accent); outline-offset: 2px; }
+.hp { display: none; }
+.form-foot { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 4px; }
+.form .btn { border: 0; cursor: pointer; font-family: inherit; }
+.form .btn:disabled { opacity: .6; cursor: wait; }
+.form-status { font-size: 14px; color: var(--text-2); }
+.form-status[data-state="ok"] { color: #9fe3b8; }
+.form-status[data-state="error"] { color: #f2a7a7; }
+@media (max-width: 680px) { .form { padding: 20px; } .form .row { grid-template-columns: 1fr; } }
