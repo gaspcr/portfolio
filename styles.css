@@ -234,3 +234,4 @@ h1 { font-family: var(--display); font-weight: 800; font-size: clamp(34px, 8.2vw
 .why-small { margin-top: 18px; font-size: 15px !important; color: var(--muted) !important; font-family: var(--mono); }
 @media (max-width: 960px) { .why-grid { grid-template-columns: 1fr; gap: 30px; } }
 @media (max-width: 680px) { .logo .wm { font-size: 12px; } .w-mid { width: 84px; height: 84px; font-size: 20px; } .w-end { font-size: 11px; padding: 8px 10px; } .why { padding-bottom: 90px; } }
+.w-mid svg { width: 62%; height: auto; }
